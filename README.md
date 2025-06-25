@@ -1,4 +1,4 @@
-# Projet : Installation et sécurisation d'Active Directory sous Windows Server 2022
+# Projet personnel : Installation et sécurisation d'Active Directory sous Windows Server 2022
 
 ## Objectif du projet
 
