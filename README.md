@@ -3,6 +3,7 @@
 ## Objectif du projet
 
 Mettre en place un environnement Windows Server 2022 avec Active Directory, DNS, DHCP et supervision, dans une optique de durcissement et de sécurisation des accès via GPO et de surveillance via un outil comme Wazuh.
+
 Note : Ce projet a été réalisé à des fins pédagogiques sur un environnement de test virtualisé sous VMware Workstation Pro.
 
 ## Étape 1 : Préparation de l'environnement
