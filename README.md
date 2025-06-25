@@ -1,152 +1,130 @@
 # Projet : Installation et sécurisation d'Active Directory sous Windows Server 2022
 
-## Objectif
+## Objectif du projet
 
-Mettre en place une infrastructure Windows Server complète et sécurisée, intégrant Active Directory, DNS, DHCP et un outil de supervision (Wazuh), le tout dans un environnement de test virtualisé avec Hyper-V.
-
----
+Mettre en place un environnement Windows Server 2022 avec Active Directory, DNS, DHCP et supervision, dans une optique de durcissement et de sécurisation des accès via GPO et de surveillance via un outil comme Wazuh.
+Note : Ce projet a été réalisé à des fins pédagogiques sur un environnement de test virtualisé sous VMware Workstation Pro.
 
 ## Étape 1 : Préparation de l'environnement
 
 ### 1.1 Installation de Windows Server 2022
 
-- ISO officielle de Windows Server 2022 Datacenter montée dans Hyper-V  
-- Installation avec "Desktop Experience"  
-- Création d’un mot de passe administrateur fort  
-
-*Capture suggérée : écran d'installation de Windows Server*
+- ISO officielle de Windows Server 2022 Datacenter montée dans VMware Workstation Pro
+- Installation de l'OS avec l'option "Desktop Experience"
+- Configuration initiale : mot de passe administrateur fort
 
 ### 1.2 Configuration réseau
 
-- IP statique : `192.168.1.10`  
-- Vérification de la connectivité réseau et Internet  
+- Attribution d'une IP statique : 192.168.1.10
+- Test de connectivité Internet et du réseau local
 
-*Capture suggérée : configuration IP dans les paramètres réseau*
-
----
+(Insérer capture d’écran de la configuration réseau)
 
 ## Étape 2 : Installation et configuration d'Active Directory
 
 ### 2.1 Renommage du serveur
 
-- Nouveau nom : `SRV-DC01`  
-- Redémarrage nécessaire
+- Nouveau nom : SRV-DC01
+- Redémarrage du serveur requis
 
 ### 2.2 Installation du rôle AD DS
 
-- Gestionnaire de serveur > Ajouter des rôles et fonctionnalités  
-- Sélection : Active Directory Domain Services (AD DS)
+- Via le Gestionnaire de serveur > "Ajouter des rôles et fonctionnalités"
+- Sélection d'Active Directory Domain Services (AD DS)
 
 ### 2.3 Promotion en contrôleur de domaine
 
-- Nouveau domaine : `mondomaine.local`  
-- Configuration DSRM  
-- Redémarrage automatique
+- Nouveau domaine : mondomaine.local
+- Configuration du mot de passe DSRM
+- Redémarrage à la fin de la promotion
 
-*Capture suggérée : assistant de promotion en contrôleur de domaine*
+(Insérer capture d’écran de l’assistant de promotion)
 
----
+## Étape 3 : Configuration avancée et sécurisation
 
-## Étape 3 : Sécurisation et configuration avancée
+### 3.1 Application de GPO
 
-### 3.1 GPO : stratégies de sécurité
+- Utilisation de la console GPMC
+- GPO de sécurité appliquée sur l'OU "Users"
+- Mots de passe complexes (min. 12 caractères, expiration 90j)
+- Désactivation des comptes inactifs après 30 jours
 
-- GPO appliquée à l'OU `Users` :
-  - Mots de passe complexes (≥12 caractères, expiration : 90j)
-  - Désactivation des comptes inactifs après 30 jours
-  - Restrictions des droits administrateurs
+(Insérer capture d’écran de la GPO)
 
-*Capture suggérée : paramètres GPO dans GPMC*
+### 3.2 Audit des événements de sécurité
 
-### 3.2 Audit des événements
+- Activation de l'audit dans "Stratégie de sécurité locale" et GPMC
+- Connexions réussies/échouées
+- Modifications d’objets AD
 
-- Connexions réussies et échouées  
-- Modifications AD (groupes, comptes)
+### 3.3 Journalisation et supervision
 
-*Capture suggérée : stratégie d’audit configurée*
+- Intégration de l’Observateur d’événements Windows pour les journaux "Sécurité"
 
-### 3.3 Observateur d’événements
+(Insérer capture d’écran de l’Observateur d’événements)
 
-- Vérification des journaux de sécurité :  
-  `Observateur d’événements > Journaux Windows > Sécurité`
+## Étape 4 : Tests de l'infrastructure
 
-*Capture suggérée : journal montrant une tentative de connexion*
+### 4.1 Test de GPO
 
----
+- Création d’un utilisateur test_user
+- Vérification du refus d’un mot de passe faible lors de sa définition
+- Utilisation de gpupdate /force et redémarrage pour forcer l’application de la GPO
 
-## Étape 4 : Tests de l’infrastructure
+### 4.2 Suivi dans l’Observateur d’événements
 
-### 4.1 Test GPO
+- Vérification de la journalisation des tentatives de connexion
 
-- Création utilisateur `test_user`  
-- Connexion avec mot de passe faible → Refusée  
-- `gpupdate /force` + redémarrage pour valider l’application
+### 4.3 Ajout d'une machine cliente Windows 10 au domaine
 
-### 4.2 Logs de connexion
+- VM Windows 10 hébergée sur VMware Workstation Pro
+- Configuration IP manuelle et DNS pointant vers le DC (192.168.1.10)
+- Intégration au domaine via "Système > Modifier les paramètres" > "Domaine : mondomaine.local"
+- Authentification testée avec l'utilisateur test_user
 
-- Vérification dans l'Observateur d’événements
+(Insérer capture d’écran de la jonction au domaine)
 
-### 4.3 Ajout d’une machine cliente Windows 10
-
-- Réglage IP et DNS (DNS = IP du DC)  
-- Rejoint le domaine `mondomaine.local`  
-- Connexion avec : `mondomaine\test_user`
-
-*Capture suggérée : écran de connexion au domaine sur Windows 10*
-
----
-
-## Étape 5 : Configuration DNS & DHCP
+## Étape 5 : Configuration des services DNS et DHCP
 
 ### 5.1 DNS
 
-- Déployé automatiquement avec AD DS  
-- Vérification des zones directe/inversée  
-- Test avec :  
+- Installation automatique avec AD DS
+- Vérification des zones directe et inversée via la console DNS
+- Test avec nslookup :
+
 ```bash
 nslookup srv-dc01.mondomaine.local
 ```
 
-Capture suggérée : console DNS avec zone directe
+(Insérer capture d’écran de la console DNS)
 
 ### 5.2 DHCP
 
-- Installation du rôle DHCP via le Gestionnaire de serveur  
-- Création d’une plage d’adresses : `192.168.1.100 - 192.168.1.150`  
-- IP du contrôleur de domaine (192.168.1.10) et de la passerelle (192.168.1.1) sont en dehors de cette plage → aucune exclusion nécessaire  
-- Configuration des options DHCP :
-  - DNS : `192.168.1.10`
-  - Passerelle : `192.168.1.1`
-  - Domaine : `mondomaine.local`
-- Autorisation du serveur DHCP dans Active Directory
+- Installation du rôle DHCP via le Gestionnaire de serveur
+- Création d’une plage : 192.168.1.100 à 192.168.1.150
+- Configuration des options : DNS, passerelle, domaine
+- Autorisation du serveur DHCP dans AD
 
-*Capture suggérée : console DHCP affichant la plage d’adresses configurée*
-
----
+(Insérer capture d’écran de la plage DHCP)
 
 ## Étape 6 : Supervision avec Wazuh
 
-### 6.1 Installation du Wazuh Server (VM Ubuntu)
+### 6.1 Installation de Wazuh Server (Linux)
 
-- Utilisation du script officiel :
+- Utilisation du script officiel sur une VM Ubuntu :
+
 ```bash
 curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
 bash wazuh-install.sh -a -i
 ```
 
-- VM Ubuntu avec au moins 8 Go de RAM et 30 Go d’espace disque
-- Port par défaut : https://<IP_WAZUH>:443
+6.2 Déploiement de l'agent Wazuh sur Windows Server (SRV-DC01)
 
-Capture suggérée : interface web Wazuh accessible sur le port 443
-
-### 6.2 Déploiement de l'agent Wazuh sur Windows Server (SRV-DC01)
-
-- Téléchargement de l’agent depuis : https://documentation.wazuh.com/current/installation-guide/wazuh-agent/wazuh-agent-package-windows.html
-- Configuration dans le fichier C:\\Program Files (x86)\\ossec-agent\\ossec.conf :
+- Téléchargement depuis https://documentation.wazuh.com/current/installation-guide/wazuh-agent/wazuh-agent-package-windows.html
+- Configuration de l’IP du manager et nom d’agent : SRV-DC01
+- Fichier ossec.conf :
 
 ```xml
-Copier
-Modifier
 <client>
   <server>
     <address>192.168.153.131</address>
@@ -160,50 +138,32 @@ Modifier
 </client>
 ```
 
-Enregistrement de l'agent depuis le manager Linux :
+- Enregistrement de l’agent avec :
+
 ```bash
-Copier
-Modifier
 /var/ossec/bin/manage_agents
-Coller la clé dans l’agent Windows
 ```
 
-Redémarrage du service agent :
+- Redémarrage du service :
+
 ```powershell
-Copier
-Modifier
 sc stop wazuh-agent
 sc start wazuh-agent
 ```
 
-Capture suggérée : agent Windows visible dans l’interface Wazuh (en ligne)
+(Insérer capture d’écran de l’interface Wazuh avec l’agent connecté)
 
-### 6.3 Vérification de la collecte des logs
+### 6.3 Contrôle via l’interface Web Wazuh
 
-- Génération d’événements : connexions, déconnexions, erreurs, modification d’utilisateurs, etc.
-- Ces événements doivent apparaître dans le tableau de bord Wazuh
-- Possibilité de filtrer les événements par gravité, nom de l’agent, type, etc.
+- Connexion : https://<IP_WAZUH>:443
+- Visualisation de l’agent Windows, alertes, logs de sécurité
 
-Capture suggérée : tableau de bord Wazuh affichant les événements de sécurité du contrôleur de domaine
+(Insérer capture d’écran de l’interface Wazuh)
 
 ## Résultat final
 
-- L’environnement de test simule une infrastructure Windows sécurisée et supervisée :
-- Contrôleur de domaine fonctionnel : SRV-DC01.mondomaine.local
-- Stratégies de sécurité via GPO appliquées aux utilisateurs
-- DHCP distribue dynamiquement les adresses IP
-- Supervision active des journaux avec Wazuh (agent installé sur le DC)
-
-## Contexte
-
-- Projet personnel réalisé sous Hyper-V, dans un objectif de montée en compétences en :
-- Administration Active Directory
-- Sécurisation des environnements Windows
-- Configuration des services réseau (DHCP, DNS)
-- Supervision et gestion centralisée des événements de sécurité
-
-## Prochaines pistes d'amélioration
-
-- Joindre un poste Linux au domaine via realmd ou sssd
-- Déployer des scripts PowerShell pour l’automatisation AD
-- Ajouter des règles personnalisées dans Wazuh pour détecter les comportements suspects (modifications de GPO, escalades de privilèges, etc.)
+L'infrastructure est pleinement fonctionnelle et sécurisée :
+- Un domaine mondomaine.local opérationnel
+- Des stratégies de sécurité appliquées
+- Une supervision active avec Wazuh
+- Un environnement prêt à gérer des utilisateurs et machines en production
