@@ -156,7 +156,7 @@ sc start wazuh-agent
 
 ### 6.3 Contrôle via l’interface Web Wazuh
 
-- Connexion : https://<IP_WAZUH>:443
+- Connexion : https://<IP_SERVEUR_WAZUH>:443
 - Visualisation de l’agent Windows, alertes, logs de sécurité
 
 (Insérer capture d’écran de l’interface Wazuh)
