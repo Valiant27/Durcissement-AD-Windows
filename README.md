@@ -19,7 +19,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 - Attribution d'une IP statique : 192.168.1.10
 - Test de connectivité Internet et du réseau local
 
-(Insérer capture d’écran de la configuration réseau)
+![image](https://github.com/user-attachments/assets/3657cada-bf46-42bb-9bc5-a2c6d9b37ebe)
 
 ## Étape 2 : Installation et configuration d'Active Directory
 
@@ -39,8 +39,6 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 - Configuration du mot de passe DSRM
 - Redémarrage à la fin de la promotion
 
-(Insérer capture d’écran de l’assistant de promotion)
-
 ## Étape 3 : Configuration avancée et sécurisation
 
 ### 3.1 Application de GPO
@@ -48,9 +46,12 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 - Utilisation de la console GPMC
 - GPO de sécurité appliquée sur l'OU "Users"
 - Mots de passe complexes (min. 12 caractères, expiration 90j)
-- Désactivation des comptes inactifs après 30 jours
 
-(Insérer capture d’écran de la GPO)
+![image](https://github.com/user-attachments/assets/94f8db03-e6cf-4618-959e-47b1be192bcb)
+
+- Désactivation des comptes inactifs après 30 jours (Pour configurer cela, j'ai rédigé le script DesactivationComptesInactifs.ps1 et créé une tâche qui l'exécute périodiquement et automatiquement.)
+
+![image](https://github.com/user-attachments/assets/e39573c6-7cd4-40a0-abdc-533bcdbb889d)
 
 ### 3.2 Audit des événements de sécurité
 
@@ -62,7 +63,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 
 - Intégration de l’Observateur d’événements Windows pour les journaux "Sécurité"
 
-(Insérer capture d’écran de l’Observateur d’événements)
+![image](https://github.com/user-attachments/assets/29ce843a-1bd7-491d-851a-bfee499efa14)
 
 ## Étape 4 : Tests de l'infrastructure
 
@@ -83,7 +84,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 - Intégration au domaine via "Système > Modifier les paramètres" > "Domaine : mondomaine.local"
 - Authentification testée avec l'utilisateur test_user
 
-(Insérer capture d’écran de la jonction au domaine)
+![image](https://github.com/user-attachments/assets/15c56927-7dbf-496e-b9d4-b88cd437512d)
 
 ## Étape 5 : Configuration des services DNS et DHCP
 
@@ -97,7 +98,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 nslookup srv-dc01.mondomaine.local
 ```
 
-(Insérer capture d’écran de la console DNS)
+![image](https://github.com/user-attachments/assets/0ef8729e-fbbe-47f5-9ede-862a522ce6ab)
 
 ### 5.2 DHCP
 
@@ -106,17 +107,17 @@ nslookup srv-dc01.mondomaine.local
 - Configuration des options : DNS, passerelle, domaine
 - Autorisation du serveur DHCP dans AD
 
-(Insérer capture d’écran de la plage DHCP)
+![image](https://github.com/user-attachments/assets/73a76202-b2d1-446c-9341-0d0b652dfe68)
 
 ## Étape 6 : Supervision avec Wazuh
 
 ### 6.1 Installation de Wazuh Server (Linux)
 
-- Utilisation du script officiel sur une VM Ubuntu :
+- Utilisation du script officiel sur une VM Ubuntu (pour les versions d'Ubuntu postérieures à 22.04, si elles ne sont pas supportées pour ce script d'installation, on ajoute l'option "--ignore-check" pour forcer l'installation malgré l'avertissement):
 
 ```bash
 curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
-bash wazuh-install.sh -a -i
+bash wazuh-install.sh -a --ignore-check
 ```
 
 6.2 Déploiement de l'agent Wazuh sur Windows Server (SRV-DC01)
@@ -152,14 +153,12 @@ sc stop wazuh-agent
 sc start wazuh-agent
 ```
 
-(Insérer capture d’écran de l’interface Wazuh avec l’agent connecté)
-
 ### 6.3 Contrôle via l’interface Web Wazuh
 
 - Connexion : https://<IP_SERVEUR_WAZUH>:443
 - Visualisation de l’agent Windows, alertes, logs de sécurité
 
-(Insérer capture d’écran de l’interface Wazuh)
+![image](https://github.com/user-attachments/assets/160c374b-5cff-40d3-9da9-e28ebc60f727)
 
 ## Résultat final
 
