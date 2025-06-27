@@ -173,7 +173,7 @@ L'infrastructure est pleinement fonctionnelle et sécurisée :
 Ce projet a été réalisé à des fins pédagogiques dans le cadre de mon apprentissage personnel.  
 Il démontre mes compétences en :
 
-- Administration Windows Server
-- Mise en œuvre d’un Active Directory sécurisé
-- Application de politiques GPO
-- Supervision via Wazuh
+- Administration Windows Server ;
+- Mise en œuvre d’un Active Directory sécurisé ;
+- Application de politiques GPO ;
+- Supervision via Wazuh.
