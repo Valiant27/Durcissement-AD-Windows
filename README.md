@@ -4,7 +4,9 @@
 
 Mettre en place un environnement Windows Server 2022 avec Active Directory, DNS, DHCP et supervision, dans une optique de durcissement et de sécurisation des accès via GPO et de surveillance via un outil comme Wazuh.
 
-Note : Ce projet a été réalisé à des fins pédagogiques sur un environnement de test virtualisé sous VMware Workstation Pro.
+Notes : 
+- Ce projet a été réalisé à des fins pédagogiques sur un environnement de test virtualisé sous VMware Workstation Pro.
+- Les IP affichées dans les captures sont issues d’un environnement local de lab et ne sont pas accessibles publiquement.
 
 ## Étape 1 : Préparation de l'environnement
 
@@ -98,7 +100,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 nslookup srv-dc01.mondomaine.local
 ```
 
-![Gestionnaire DNS](https://github.com/user-attachments/assets/980c1206-048a-415b-88a4-2d88db11ce57)
+![Gestionnaire DNS](https://github.com/user-attachments/assets/4cba3b07-281a-48ab-91fa-30c68d7a88e2)
 
 ### 5.2 DHCP
 
@@ -129,7 +131,7 @@ bash wazuh-install.sh -a --ignore-check
 ```xml
 <client>
   <server>
-    <address><IP_SERVEUR_WAZUH></address>
+    <address>IP_SERVEUR_WAZUH</address>
     <port>1514</port>
     <protocol>tcp</protocol>
   </server>
