@@ -49,7 +49,7 @@ Note : Ce projet a été réalisé à des fins pédagogiques sur un environnemen
 
 ![image](https://github.com/user-attachments/assets/94f8db03-e6cf-4618-959e-47b1be192bcb)
 
-- Désactivation des comptes inactifs après 30 jours (Pour configurer cela, j'ai rédigé le script DesactivationComptesInactifs.ps1 et créé une tâche qui l'exécute périodiquement et automatiquement.)
+- Désactivation automatique des comptes inactifs depuis plus de 30 jours, via un script PowerShell (DesactivationComptesInactifs.ps1) exécuté périodiquement grâce au Planificateur de tâches.
 
 ![image](https://github.com/user-attachments/assets/e39573c6-7cd4-40a0-abdc-533bcdbb889d)
 
@@ -113,7 +113,7 @@ nslookup srv-dc01.mondomaine.local
 
 ### 6.1 Installation de Wazuh Server (Linux)
 
-- Utilisation du script officiel sur une VM Ubuntu (pour les versions d'Ubuntu postérieures à 22.04, si elles ne sont pas supportées pour ce script d'installation, on ajoute l'option "--ignore-check" pour forcer l'installation malgré l'avertissement) :
+- Utilisation du script officiel sur une VM Ubuntu. Pour les versions ultérieures à 22.04 non prises en charge, l’option --ignore-check permet de forcer l’installation malgré l’avertissement.
 
 ```bash
 curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
@@ -167,3 +167,13 @@ L'infrastructure est pleinement fonctionnelle et sécurisée :
 - Des stratégies de sécurité appliquées ;
 - Une supervision active avec Wazuh ;
 - Un environnement prêt à gérer des utilisateurs et machines en production.
+
+## À propos
+
+Ce projet a été réalisé à des fins pédagogiques dans le cadre de mon apprentissage personnel.  
+Il démontre mes compétences en :
+
+- Administration Windows Server
+- Mise en œuvre d’un Active Directory sécurisé
+- Application de politiques GPO
+- Supervision via Wazuh
